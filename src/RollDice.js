@@ -8,7 +8,7 @@ class RollDice extends Component {
   };
   constructor(props) {
     super(props);
-    this.state = { die1: "one", die2: "two" };
+    this.state = { die1: "one", die2: "two", rolling: false };
     this.roll = this.roll.bind(this);
   }
   roll() {
@@ -21,17 +21,24 @@ class RollDice extends Component {
     ];
 
     //set state with new rolls
-    this.setState({ die1: newDie1, die2: newDie2 });
+    this.setState({ die1: newDie1, die2: newDie2, rolling: true });
+
+    //wait one second, then set rolling to false
+    setTimeout(() => {
+      this.setState({ rolling: false });
+    }, 1000);
   }
 
   render() {
     return (
       <div className="RollDice">
         <div className="RollDice-container">
-          <Dice face={this.state.die1} />
-          <Dice face={this.state.die2} />
+          <Dice face={this.state.die1} rolling={this.state.rolling} />
+          <Dice face={this.state.die2} rolling={this.state.rolling} />
         </div>
-        <button onClick={this.roll}>Roll Dice</button>
+        <button onClick={this.roll} disabled={this.state.rolling}>
+          {this.state.rolling ? "Rolling..." : "Role Dice"}
+        </button>
       </div>
     );
   }
